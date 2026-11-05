@@ -1,4 +1,4 @@
-# 🏧 Caixa Eletrônico (ATM Terminal) em C
+-# 🏧 Caixa Eletrônico (ATM Terminal) em C
 
 Simulador de terminal bancário interativo desenvolvido em linguagem C. O projeto implementa operações essenciais de um caixa eletrônico (saques, depósitos e consulta de saldo em tempo real) com validação de entrada e um **algoritmo de distribuição balanceada de cédulas**.
 
@@ -90,7 +90,8 @@ Notas entregues:
 
 ```text
 ├── docs/
-│   └── documentacao-atm.pdf   # Slides projeto
+│   └── documentacao-atm.pptx   # Slides do projeto
+│   └── PseudocódigoC.txt      # Pseudocódigo do projeto
 ├── ATM.c                      # Código-fonte principal
 ├── .gitignore                 # Arquivo para ignorar binários e executáveis
 └── README.md                  # Apresentação e guia do projeto
