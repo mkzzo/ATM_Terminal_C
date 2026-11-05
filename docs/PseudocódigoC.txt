@@ -1,0 +1,130 @@
+INICIO
+    // ===== Declaração de variáveis =====
+    INTEIRO opcao, valorOperacao, restante, mudou, i
+    INTEIRO saldo
+    INTEIRO notas100, notas50, notas20, notas10, notas5
+    VETOR ordemCiclica <- [50, 20, 10, 5, 100]
+
+    saldo <- 500    // persiste entre as operações
+
+    // ===== Laço principal do terminal =====
+    REPITA
+
+        // --- Menu ---
+        ESCREVA "CAIXA ELETRONICO - TERMINAL"
+        ESCREVA "Saldo Atual: R$ ", saldo
+        ESCREVA "1 - Realizar Saque"
+        ESCREVA "2 - Realizar Deposito"
+        ESCREVA "0 - Encerrar"
+        ESCREVA "Escolha uma opcao: "
+        LEIA opcao
+
+        SE a leitura não for um número inteiro ENTAO
+            ESCREVA "Erro: Entrada invalida. Encerrando programa."
+            SAIA DO REPITA      // encerra o programa
+        FIM SE
+
+        // --- Escolha da operação ---
+        ESCOLHA opcao
+
+            // ================= SAQUE =================
+            CASO 1:
+                ESCREVA "Digite o valor do saque: "
+                LEIA valorOperacao
+
+                SE a leitura não for um número inteiro ENTAO
+                    ESCREVA "Erro: Valor invalido."
+                    SAIA DO ESCOLHA
+                FIM SE
+
+                // Validações da regra de negócio
+                SE valorOperacao <= 0 ENTAO
+                    ESCREVA "Erro: o valor deve ser maior que zero."
+                SENAO SE valorOperacao > saldo ENTAO
+                    ESCREVA "Erro: Saldo insuficiente."
+                SENAO SE o resto de valorOperacao dividido por 5 for diferente de 0 ENTAO
+                    ESCREVA "Erro: so existem notas de 100, 50, 20, 10 e 5."
+                SENAO
+                    // Saque válido
+                    saldo <- saldo - valorOperacao
+
+                    // Prepara a distribuição
+                    notas100, notas50, notas20, notas10, notas5 <- 0
+                    restante <- valorOperacao
+
+                    // Passo 1: kits de uma nota de cada tipo (R$ 185)
+                    ENQUANTO restante >= 185 FACA
+                        notas100 <- notas100 + 1
+                        notas50  <- notas50  + 1
+                        notas20  <- notas20  + 1
+                        notas10  <- notas10  + 1
+                        notas5   <- notas5   + 1
+                        restante <- restante - 185
+                    FIM ENQUANTO
+
+                    // Passo 2: distribuição cíclica (uma nota de cada tipo por rodada até zerar)
+                    mudou <- 1
+                    ENQUANTO mudou = 1 E restante > 0 FACA
+                        mudou <- 0
+                        PARA i DE 0 ATE 4 FACA
+                            SE restante >= ordemCiclica[i] ENTAO
+                                // soma 1 no contador da nota correspondente
+                                SE ordemCiclica[i] = 100 ENTAO notas100 <- notas100 + 1
+                                SENAO SE ordemCiclica[i] = 50  ENTAO notas50  <- notas50  + 1
+                                SENAO SE ordemCiclica[i] = 20  ENTAO notas20  <- notas20  + 1
+                                SENAO SE ordemCiclica[i] = 10  ENTAO notas10  <- notas10  + 1
+                                SENAO SE ordemCiclica[i] = 5   ENTAO notas5   <- notas5   + 1
+                                FIM SE
+
+                                restante <- restante - ordemCiclica[i]
+                                mudou <- 1
+                            FIM SE
+                        FIM PARA
+                    FIM ENQUANTO
+
+                    // Recibo
+                    ESCREVA "Saque de R$ ", valorOperacao, " realizado com sucesso!"
+                    ESCREVA "Notas entregues (Modo Balanceado):"
+                    SE notas100 > 0 ENTAO ESCREVA notas100, " nota(s) de 100"
+                    SE notas50  > 0 ENTAO ESCREVA notas50,  " nota(s) de 50"
+                    SE notas20  > 0 ENTAO ESCREVA notas20,  " nota(s) de 20"
+                    SE notas10  > 0 ENTAO ESCREVA notas10,  " nota(s) de 10"
+                    SE notas5   > 0 ENTAO ESCREVA notas5,   " nota(s) de 5"
+                FIM SE
+                SAIA DO ESCOLHA
+
+            // ================ DEPÓSITO ================
+            CASO 2:
+                ESCREVA "Digite o valor do deposito: "
+                LEIA valorOperacao
+
+                SE a leitura não for um número inteiro ENTAO
+                    ESCREVA "Erro: Valor invalido."
+                    SAIA DO ESCOLHA
+                FIM SE
+
+                SE valorOperacao <= 0 ENTAO
+                    ESCREVA "Erro: o valor deve ser maior que zero."
+                SENAO SE o resto de valorOperacao dividido por 5 for diferente de 0 ENTAO
+                    ESCREVA "Deposito recusado: apenas cedulas de 100, 50, 20, 10 e 5."
+                SENAO
+                    saldo <- saldo + valorOperacao
+                    ESCREVA "Deposito realizado com sucesso!"
+                    ESCREVA "Novo saldo: R$ ", saldo
+                FIM SE
+                SAIA DO ESCOLHA
+
+            // ================ ENCERRAR ================
+            CASO 0:
+                ESCREVA "Obrigado por utilizar nosso terminal bancario. Ate logo!"
+                SAIA DO ESCOLHA
+
+            // ============ QUALQUER OUTRA OPÇÃO ============
+            OUTRO CASO:
+                ESCREVA "Opcao invalida. Escolha 1, 2 ou 0."
+                SAIA DO ESCOLHA
+
+        FIM ESCOLHA
+
+    ATE opcao = 0      // repete até o usuário digitar 0
+FIM
